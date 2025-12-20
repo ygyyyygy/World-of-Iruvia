@@ -1,0 +1,1734 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ОООООУУУУУУУУУУУУУУУУУУУУУУУУУ ДАААААААААААААААААААААААААА</title>
+
+  <style>
+    /* ================================================================
+  GENERAL STYLES
+  ================================================================ */
+html {
+  overflow-x: hidden; 
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'Georgia', serif; 
+  overflow: hidden;
+  cursor: none !important; 
+  -ms-overflow-style: none;  
+}
+
+body::-webkit-scrollbar {
+  display: none; 
+}
+
+/* ================================================================
+  CUSTOM CURSOR
+  ================================================================ */
+#customCursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.15s ease, border-color 0.3s ease;
+  box-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3),
+    inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+#customCursor::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+#customCursor.hover {
+  transform: scale(1.8);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.8),
+    0 0 40px rgba(255, 255, 255, 0.5),
+    inset 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* ================================================================
+  FIRST VIEW - FLOATING TEXT
+  ================================================================ */
+#firstView {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.8s ease-out;
+  pointer-events: auto;
+  perspective: 1400px;
+  -webkit-perspective: 1400px;
+}
+
+#firstView.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 3D welcome card */
+#floatingBox {
+  background: linear-gradient(180deg, rgba(28,28,30,0.78), rgba(18,18,20,0.65));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 28px 44px;
+  border-radius: 14px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 6px 24px rgba(255,255,255,0.02) inset;
+  backdrop-filter: blur(8px);
+  text-align: center;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  cursor: none;
+  font-family: 'Times New Roman', serif;
+}
+
+/* entrance / exit animations */
+.welcome-enter {
+  animation: cardEnter 900ms cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+.welcome-exit {
+  animation: cardExit 700ms cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, -420px) rotateX(18deg) rotateY(-12deg) scale(0.92);
+    filter: blur(6px) saturate(0.9);
+  }
+  60% {
+    transform: translate3d(0, 6px, -80px) rotateX(8deg) rotateY(-6deg) scale(0.97);
+    opacity: 1;
+    filter: blur(2px) saturate(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1);
+    filter: blur(0) saturate(1.02);
+  }
+}
+
+@keyframes cardExit {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -40px, 800px) rotateX(-28deg) rotateY(24deg) scale(1.4);
+    filter: blur(10px) saturate(0.6);
+  }
+}
+
+/* inner wrapper for independent translate (keeps 3D rotations intact) */
+#floatingInner {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* wrapper that receives cursor-relative parallax (rotation + translate) */
+#floatingWrapper {
+  will-change: transform;
+  transform-style: preserve-3d;
+  transition: transform 0.12s ease-out;
+}
+
+#floatingBox .main {
+  font-size: 26px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+#floatingBox .sub {
+  font-size: 14px;
+  color: #ccc;
+  font-style: italic;
+}
+
+#floatingBox .definition {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #999;
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 500px;
+}
+
+/* ================================================================
+  SECOND VIEW - AKAKALIXTE
+  ================================================================ */
+#secondView {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-out;
+}
+
+#secondView.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Subtle background gradient / vignette removed per request */
+#secondView::before { background: none; }
+
+/* Move GUIs slightly lower to better occupy the lower half and reduce empty center space */
+#guisWrapper {
+  top: 62%;
+  transform: translate(-50%, -40%);
+}
+
+/* Make title sit a bit higher and add a decorative connector */
+#titleContainer {
+  top: 36%;
+  transform: translate(-50%, -50%);
+}
+
+
+/* Small visual cue for interactive GUIs when clicked from JS */
+.smallGui.pulse {
+  animation: pulseGlow 0.9s ease-out forwards;
+  transform: scale(1.06) !important;
+}
+
+/* connector removed by request */
+
+/* global wash removed per request */
+
+/* Slightly reduce spacing on wide screens to avoid feeling empty */
+@media (min-width: 1200px) {
+  #fourContainers { gap: 18px; }
+  #guisWrapper { gap: 18px; }
+  #titleContainer { padding: 30px 48px; }
+}
+
+/* ================================================================
+  АНИМАЦИИ
+  ================================================================ */
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow: 
+      0 0 5px rgba(255, 255, 255, 0.7),
+      0 0 15px #fff,
+      0 0 30px #fff;
+  }
+  50% {
+    text-shadow: 
+      0 0 10px rgba(255, 255, 255, 1),
+      0 0 20px #fff,
+      0 0 40px #fff,
+      0 0 60px rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translate(var(--x-start), -100px) rotateZ(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x-end), 100vh) rotateZ(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes hoverPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ================================================================
+  LUMINOUS PETALS
+  ================================================================ */
+.petal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px; 
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5); 
+  pointer-events: none;
+  z-index: 1;
+  animation: fall var(--duration) linear infinite;
+}
+.petal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px; 
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5); 
+  pointer-events: none;
+  z-index: 1;
+  animation: fall var(--duration) linear infinite;
+}
+
+/* ================================================================
+   TITRE PRINCIPAL (GRAND CARRÉ)
+   ================================================================ */
+#titleContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  
+  padding: 40px 60px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 30px rgba(255,255,255,0.05);
+  text-align: center;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  z-index: 100;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* ================================================================
+   CONTENEUR DES 4 GUI + BOUTON
+   ================================================================ */
+#guisWrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-out;
+  z-index: 100;
+  will-change: opacity;
+}
+
+#fourContainers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.smallGui {
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  
+  padding: 40px 50px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 30px rgba(255,255,255,0.05);
+  color: #fff;
+  text-align: center;
+  min-width: 250px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  will-change: transform;
+  transform: translateZ(0);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.smallGui:hover {
+  transform: translateZ(0) scale(1.08);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 0 50px rgba(255, 255, 255, 0.15),
+    0 0 100px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: rgba(20, 20, 20, 0.75);
+}
+
+.smallGui:hover .gui-title-small {
+  animation: hoverPulse 1.5s ease-in-out infinite;
+}
+
+.smallGui:hover .gui-glow {
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.9),
+    0 0 15px rgba(255, 255, 255, 0.9),
+    0 0 30px #fff,
+    0 0 60px #fff,
+    0 0 90px rgba(255, 255, 255, 0.3);
+}
+
+/* ================================================================
+   CONTENU DES GUI
+   ================================================================ */
+.gui-title {
+  font-size: 48px;
+  letter-spacing: 4px;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.gui-title-small {
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.animated-glow {
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.7),
+    0 0 15px #fff,
+    0 0 30px #fff; 
+  animation: pulseGlow 2.5s infinite alternate ease-in-out; 
+}
+
+.gui-glow {
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.7),
+    0 0 20px #fff,
+    0 0 40px #fff;
+  transition: text-shadow 0.4s ease;
+}
+
+.gui-subtitle {
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  color: #ccc;
+  font-style: italic;
+  position: relative;
+  margin-bottom: 15px;
+  transition: color 0.3s ease;
+}
+
+.smallGui:hover .gui-subtitle {
+  color: #fff;
+}
+
+.gui-subtitle::after {
+  content: "";
+  display: block;
+  width: 140px;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+  margin: 8px auto 0;
+  transition: all 0.3s ease;
+}
+
+.smallGui:hover .gui-subtitle::after {
+  width: 180px;
+  background: rgba(255,255,255,0.6);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.gui-extra-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #888;
+  font-style: italic;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.smallGui:hover .gui-extra-text {
+  color: #aaa;
+}
+
+/* ================================================================
+   BOUTON INFO
+   ================================================================ */
+#infoButton {
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 15px 35px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 30px rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 20px;
+  letter-spacing: 2px;
+  cursor: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.6),
+    0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+#infoButton:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 0 40px rgba(255, 255, 255, 0.12),
+    0 0 80px rgba(255, 255, 255, 0.06);
+  background: rgba(20, 20, 20, 0.75);
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.9),
+    0 0 15px rgba(255, 255, 255, 0.6),
+    0 0 30px #fff;
+}
+
+/* match the close-modal hover effect for Info button */
+#infoButton:hover {
+  color: #fff;
+  transform: scale(1.2);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* ================================================================
+   MENU CONTEXTUEL INFO
+   ================================================================ */
+#infoModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+/* when opening */
+#infoModal.show {
+  opacity: 1;
+  pointer-events: auto;
+  animation: slideIn 0.4s ease-out;
+}
+
+/* when closing */
+#infoModal.hide {
+  opacity: 0;
+  pointer-events: none;
+  animation: slideOut 0.35s ease-in forwards;
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+#infoContent {
+  background: rgba(20, 20, 20, 0.9);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 45px 55px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 
+    0 0 50px rgba(255,255,255,0.1),
+    0 0 100px rgba(255,255,255,0.05);
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideIn 0.5s ease-out;
+}
+
+#infoContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+#infoContent::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+#infoContent::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+#infoContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.info-section {
+  margin-bottom: 40px;
+}
+
+.info-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 38px;
+  letter-spacing: 4px;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: center;
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.7),
+    0 0 15px rgba(255, 255, 255, 0.5),
+    0 0 30px #fff;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  color: #aaa;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 16px;
+  line-height: 1.6;
+  color: #ccc;
+  letter-spacing: 0.5px;
+}
+
+.info-list li:last-child {
+  border-bottom: none;
+}
+
+.info-list li::before {
+  content: '◆';
+  color: rgba(255, 255, 255, 0.6);
+  margin-right: 12px;
+  font-size: 12px;
+}
+
+.info-list li strong {
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+#closeModal {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 30px;
+  color: rgba(255,255,255,0.6);
+  cursor: none;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+#closeModal:hover {
+  color: #fff;
+  transform: scale(1.2);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* make the About-me close button hover match the info modal close */
+#closeContact {
+  cursor: none;
+  transition: all 0.25s ease;
+}
+
+#closeContact:hover {
+  transform: scale(1.2);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+/* CONTACT PANEL */
+#contactPanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#contactPanel.show { opacity: 1; pointer-events: auto; }
+#contactPanel.hide { opacity: 0; pointer-events: none; }
+
+#contactContent {
+  background: rgba(18,18,18,0.95);
+  padding: 34px 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,0.02) inset;
+  max-width: 600px;
+  width: calc(100% - 80px);
+  color: #ddd;
+  position: relative;
+  text-align: center; /* center inline-flex .contact-card inside */
+}
+
+/* animate contact content on show to match title->guis feel */
+#contactPanel #contactContent {
+  transform: translateY(18px) scale(0.995);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.2,0.8,0.2,1), opacity 0.6s ease;
+}
+
+#contactPanel.show #contactContent {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+#closeContact {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-size: 28px;
+  color: rgba(255,255,255,0.6);
+  cursor: none;
+}
+
+.contact-header {
+  font-size: 34px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.contact-text {
+  color: #bbb;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+/* contact card outer look: pill-like container matching screenshot */
+.contact-card {
+  display: inline-flex; /* shrink to content width */
+  gap: 10px;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(18,18,18,0.96), rgba(14,14,14,0.98));
+  padding: 10px 14px; /* compact padding so pill fits avatar+icons */
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  margin: 18px auto; /* center the pill */
+  width: auto;
+}
+
+.contact-card {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.35s ease;
+  will-change: transform, box-shadow;
+}
+
+.contact-card:hover {
+  transform: translateY(-4px); /* чуть приподнять карточку */
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.6),
+    0 0 40px rgba(255,255,255,0.02) inset;
+}
+
+/* center text inside the right side info area */
+.contact-info {
+  text-align: center;
+}
+
+/* Social icon buttons behave like small GUI icons */
+.social-links .social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 10px;
+  color: #ddd;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.01);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  transition: transform 0.28s cubic-bezier(0.2,0.8,0.2,1), background 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+  cursor: none; /* use custom cursor like other interactive elements */
+  user-select: none;
+}
+
+.social-links .social-icon:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 30px rgba(255,255,255,0.02) inset;
+}
+
+.social-links .social-icon img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+
+.avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* чтобы картинка красиво заполняла блок */
+  display: block;
+}
+
+/* slightly reduce avatar size to better fit compact pill if needed */
+.contact-card .avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+}
+
+.contact-info .name {
+  font-size: 20px;
+  color: #fff;
+  font-weight: 700;
+}
+.contact-info .role {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.social-links { display: inline-flex; align-items: center; gap: 8px; }
+
+.social-links .social-icon { margin: 0 6px; }
+
+@media (max-width: 768px) {
+  #contactContent { padding: 22px; }
+  .contact-card { flex-direction: column; align-items: center; }
+  .avatar { width: 110px; height: 110px; }
+  .social-links .social-icon { cursor: pointer; }
+}
+
+/* ================================================================
+   RESPONSIVE MOBILE (max-width: 768px)
+   ================================================================ */
+@media (max-width: 768px) {
+  body {
+    cursor: auto !important;
+  }
+  
+  #customCursor {
+    display: none;
+  }
+  
+  #floatingBox {
+    max-width: 85%;
+    cursor: pointer;
+  }
+  
+  #titleContainer {
+    padding: 30px 40px;
+    max-width: 85%;
+  }
+  
+  .gui-title {
+    font-size: 32px;
+    letter-spacing: 2px;
+  }
+  
+  .social-links .social-icon img {
+    width: 16px;
+    height: 16px;
+    display: block;
+    filter: brightness(0.95) invert(1) sepia(0) saturate(0) hue-rotate(0deg); /* make sure white icons look good */
+  }
+  
+  .gui-subtitle {
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  
+  #guisWrapper {
+    max-width: 85%;
+    overflow-y: auto;
+    max-height: 80vh;
+    padding: 20px 0;
+  }
+  
+  #fourContainers {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .smallGui {
+    min-width: auto;
+    width: 100%;
+    padding: 25px 35px;
+    min-height: 140px;
+  }
+  
+  .gui-title-small {
+    font-size: 26px;
+    letter-spacing: 2px;
+  }
+  
+  .gui-subtitle {
+    font-size: 14px;
+  }
+  
+  .gui-extra-text {
+    font-size: 13px;
+  }
+  
+  .smallGui:hover {
+    transform: translateZ(0) scale(1.02);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  .smallGui:hover .gui-title-small {
+    animation: none;
+  }
+  
+  #infoButton {
+    font-size: 18px;
+    padding: 12px 28px;
+    cursor: pointer;
+  }
+  
+  #infoContent {
+    padding: 35px 40px;
+    max-width: 85%;
+    max-height: 75vh;
+  }
+  
+  .section-title {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+  
+  .section-subtitle {
+    font-size: 14px;
+  }
+  
+  .info-list li {
+    font-size: 14px;
+  }
+  
+  .petal {
+    width: 6px;
+    height: 6px;
+  }
+  
+  #closeModal {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 480px) {
+  #floatingBox .main {
+    font-size: 22px;
+  }
+  
+  #floatingBox .definition {
+    font-size: 12px;
+  }
+  
+  #titleContainer {
+    padding: 25px 30px;
+  }
+  
+  .gui-title {
+    font-size: 28px;
+  }
+  
+  .gui-title-small {
+    font-size: 22px;
+  }
+  
+  .smallGui {
+    padding: 20px 25px;
+    min-height: 120px;
+  }
+  
+  .gui-subtitle::after {
+    width: 100px;
+  }
+  
+  #infoButton {
+    font-size: 16px;
+    padding: 10px 24px;
+  }
+  
+  #infoContent {
+    padding: 30px 30px;
+  }
+  
+  .section-title {
+    font-size: 28px;
+  }
+  
+  .info-list li {
+    font-size: 13px;
+  }
+}
+
+/* ================================================================
+  WORD TRAIL — small gimmick: glowing words on click
+  ================================================================ */
+.word-trail {
+  position: fixed;
+  pointer-events: none;
+  color: #fff;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  font-weight: bold;
+  opacity: 0;
+  text-shadow: 
+    0 0 8px rgba(255,255,255,0.9),
+    0 0 20px rgba(255,255,255,0.6),
+    0 0 40px rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  transition: transform 1.5s cubic-bezier(0.2,0.8,0.2,1), opacity 1.5s ease-out;
+  z-index: 200;
+}
+
+.word-trail.show {
+  opacity: 1;
+}
+  </style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR (DESKTOP ONLY) -->
+<div id="customCursor"></div>
+
+<!-- AUDIO (hidden) -->
+<audio id="backgroundMusic" loop>
+  <source src="videoplayback.m4a" type="audio/mp4">
+  <source src="videoplayback.mp3" type="audio/mpeg">
+</audio>
+
+<!-- FIRST VIEW - WELCOME SCREEN -->
+<div id="firstView">
+  <div id="floatingWrapper">
+    <div id="floatingBox">
+      <div id="floatingInner">
+      <div class="main">Click here...</div>
+      <div class="sub">Amor — sinceritas — humanitas</div>
+      <div class="definition">
+        Amor (ex Latino amor, significans «dilectio, affectus verus, donum sui ipsius»)
+        est vinculum inter animas, quod non quaerit rationem, sed nascitur ex corde aperto.
+      </div>
+      <div class="definition">
+        Sinceritas (ex Latino sinceritas, significans «puritas, veritas, simplex animus»)
+        est consuetudo loquendi et vivendi sine masca, ubi verba cum corde concordant.
+      </div>
+      <div class="definition">
+        Humanitas (ex Latino humanitas, significans «humanitas, benevolentia, cultus»)
+        est ars vivendi cum aliis in societate, cum respectu, compassionis et aequitatis.
+      </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<!-- SECOND VIEW - Iruvia -->
+<div id="secondView">
+  <!-- MAIN TITLE -->
+  <div id="titleContainer">
+    <div class="gui-title animated-glow">Iruvia</div> 
+    <div class="gui-subtitle">Modo homo esse volo</div>
+  </div>
+
+  <!-- WRAPPER: 4 GUIS + INFO BUTTON -->
+  <div id="guisWrapper">
+    <div id="fourContainers">
+      <div class="smallGui">
+        <div class="gui-title-small gui-glow">Vita</div>
+        <div class="gui-subtitle">cotidie — passio — somnium</div>
+        <div class="gui-extra-text">student • dev • late nights</div>
+      </div>
+      
+      <div class="smallGui">
+        <div class="gui-title-small gui-glow">Ars</div>
+        <div class="gui-subtitle">victoria — furia — precisio</div>
+        <div class="gui-extra-text">CS2 • LoL • Valorant</div>
+      </div>
+      
+      <div class="smallGui">
+        <div class="gui-title-small gui-glow">Verba</div>
+        <div class="gui-subtitle">poema — sapientia — animus</div>
+        <div class="gui-extra-text">[soon]</div>
+      </div>
+      
+      <div class="smallGui">
+        <div class="gui-title-small gui-glow">Contact</div>
+        <div class="gui-subtitle">nexus — inter — nos</div>
+      </div>
+    </div>
+    
+    <button id="infoButton">INFO</button>
+  </div>
+
+  <!-- INFO MODAL -->
+  <div id="infoModal">
+    <div id="infoContent">
+      <span id="closeModal">×</span>
+      
+      <!-- General Information -->
+      <div class="info-section">
+        <div class="section-title">INFO</div>
+        <ul class="info-list">
+          <li><strong>Developer :</strong> Iruvia</li>
+          <li><strong>Publication date :</strong> Coming soon..</li>
+          <li><strong>Devise :</strong> Phobia est Arma (Fear is a weapon)</li>
+          <li><strong>Thème :</strong> i don't know ?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT PANEL -->
+  <div id="contactPanel">
+    <div id="contactContent">
+      <span id="closeContact">×</span>
+
+
+      <div class="section-title">about me :)</div>
+      <div class="gui-subtitle">Work in progress... 2 %</div>
+      <div class="contact-card">
+        <div class="avatar"><img src="icons/avatar.gif" alt="Avatar" loading="lazy"></div>
+        <div class="contact-info">
+          <div class="social-links">
+            <a class="social-icon" href="https://twitch.tv/Iru0_o" target="_blank" rel="noopener" aria-hidden="true"><img src="icons/twitch.svg" alt="Twitch" loading="lazy"></a>
+            <a class="social-icon" href="https://t.me/silennnn" target="_blank" rel="noopener" aria-hidden="true"><img src="icons/telegram.svg" alt="Telegram" loading="lazy"></a>
+            <a class="social-icon" href="https://steamcommunity.com/id/Iru0_o/" target="_blank" rel="noopener" aria-hidden="true"><img src="icons/steam.svg" alt="Steam" loading="lazy"></a>
+            <a class="social-icon" href="https://open.spotify.com/user/31v276p4qgoqmbfyvbtfe2c6blxe" target="_blank" rel="noopener" aria-hidden="true"><img src="icons/spotify.svg" alt="Spotify" loading="lazy"></a>
+            <a class="social-icon" href="https://discord.com/users/517210061454442496" target="_blank" rel="noopener" aria-hidden="true"><img src="icons/discord.svg" alt="Discord" loading="lazy"></a>
+            <a class="social-icon" href="https://www.youtube.com/@s1Iect" target="_blank" rel="noopener" aria-hidden="true"><img src="icons/youtube.svg" alt="Youtube" loading="lazy"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// DOM ELEMENTS
+// ================================================================
+const firstView = document.getElementById('firstView');
+const secondView = document.getElementById('secondView');
+const floatingBox = document.getElementById('floatingBox');
+const floatingInner = document.getElementById('floatingInner');
+const floatingWrapper = document.getElementById('floatingWrapper');
+const titleContainer = document.getElementById('titleContainer');
+const guisWrapper = document.getElementById('guisWrapper');
+const customCursor = document.getElementById('customCursor');
+const infoButton = document.getElementById('infoButton');
+const infoModal = document.getElementById('infoModal');
+const closeModal = document.getElementById('closeModal');
+const contactPanel = document.getElementById('contactPanel');
+const closeContact = document.getElementById('closeContact');
+const backgroundMusic = document.getElementById('backgroundMusic');
+
+let currentView = 'title';
+let transitionTimeout = null;
+let hasEnteredSecondView = false;
+let hasEnteredContactView = false;
+let wheelCooldownUntil = 0;
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
+// ================================================================
+// CUSTOM CURSOR (DESKTOP ONLY)
+// ================================================================
+if (!isMobile) {
+  let mouseX = 0;
+  let mouseY = 0;
+  let cursorX = 0;
+  let cursorY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animateCursor() {
+    const dx = mouseX - cursorX;
+    const dy = mouseY - cursorY;
+    
+    cursorX += dx * 0.15;
+    cursorY += dy * 0.15;
+    
+    customCursor.style.left = cursorX - 10 + 'px';
+    customCursor.style.top = cursorY - 10 + 'px';
+    
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // include only interactive pieces; keep the contact block static — cursor reacts on social icons only
+  const interactiveElements = document.querySelectorAll('.smallGui, #infoButton, #closeModal, #floatingWrapper, .social-icon, #closeContact');
+  interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      customCursor.classList.add('hover');
+    });
+    el.addEventListener('mouseleave', () => {
+      customCursor.classList.remove('hover');
+    });
+  });
+
+  // Social icons are decorative here (non-clickable); no click handlers.
+}
+
+// ================================================================
+// FLOATING BOX ANIMATION (FIRST VIEW)
+// ================================================================
+if (!isMobile) {
+  let mouseXFloat = window.innerWidth / 2;
+  let mouseYFloat = window.innerHeight / 2;
+  let currentXFloat = mouseXFloat;
+  let currentYFloat = mouseYFloat;
+  let lastXFloat = currentXFloat;
+  let lastYFloat = currentYFloat;
+  let currentRotX = 0;
+  let currentRotY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseXFloat = e.clientX;
+    mouseYFloat = e.clientY;
+  });
+
+  function animateFloatingBox() {
+    lastXFloat = currentXFloat;
+    lastYFloat = currentYFloat;
+    
+    currentXFloat += (mouseXFloat - currentXFloat) * 0.03;
+    currentYFloat += (mouseYFloat - currentYFloat) * 0.03;
+    
+    const offsetX = (currentXFloat - window.innerWidth / 2) * 0.05;
+    const offsetY = (currentYFloat - window.innerHeight / 2) * 0.05;
+    
+    // compute rotation based on pointer relative to center
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const relX = (currentXFloat - centerX) / centerX; // -1 .. 1
+    const relY = (currentYFloat - centerY) / centerY; // -1 .. 1
+
+    const maxRotY = 8; // degrees (tilt left/right)
+    const maxRotX = 6; // degrees (tilt up/down)
+
+    const targetRotY = relX * maxRotY;
+    const targetRotX = -relY * maxRotX; // invert so moving up tilts toward user
+
+    // smooth the rotation
+    currentRotX += (targetRotX - currentRotX) * 0.08;
+    currentRotY += (targetRotY - currentRotY) * 0.08;
+
+    // apply combined translate + rotation to the wrapper so the whole rectangle tilts
+    if (floatingWrapper) {
+      floatingWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg)`;
+    }
+    
+    const deltaX = Math.abs(currentXFloat - lastXFloat);
+    const deltaY = Math.abs(currentYFloat - lastYFloat);
+    const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    const blurAmount = Math.min(speed * 0.5, 2);
+    const shadowSpread = Math.min(speed * 1.5, 30);
+    
+    if (floatingBox) {
+      floatingBox.style.backdropFilter = `blur(${6 + blurAmount}px)`;
+      floatingBox.style.boxShadow = `0 0 ${20 + shadowSpread}px rgba(255,255,255,${0.05 + (blurAmount * 0.02)})`;
+    }
+    
+    requestAnimationFrame(animateFloatingBox);
+  }
+  animateFloatingBox();
+}
+
+// ================================================================
+// LUMINOUS PETALS
+// ================================================================
+const NUM_PETALS = isMobile ? 15 : 30;
+const MIN_DURATION = 10;
+const MAX_DURATION = 20;
+
+function createPetal() {
+  const petal = document.createElement('div');
+  petal.classList.add('petal');
+  document.body.appendChild(petal);
+
+  const xStart = Math.random() * window.innerWidth;
+  const xEnd = xStart + (Math.random() - 0.5) * 400;
+  const duration = Math.random() * (MAX_DURATION - MIN_DURATION) + MIN_DURATION;
+
+  petal.style.left = `${xStart}px`;
+  petal.style.setProperty('--x-start', '0px');
+  petal.style.setProperty('--x-end', `${xEnd - xStart}px`);
+  petal.style.setProperty('--duration', `${duration}s`);
+  petal.style.animationDelay = `-${Math.random() * duration}s`;
+
+  petal.addEventListener('animationend', () => {
+    petal.remove();
+    createPetal();
+  });
+}
+
+for (let i = 0; i < NUM_PETALS; i++) {
+  createPetal();
+}
+
+// ================================================================
+// TRANSITION FROM FIRST VIEW TO SECOND
+// ================================================================
+function enterSecondView() {
+  if (hasEnteredSecondView) return;
+  hasEnteredSecondView = true;
+  
+  // Start music
+  // backgroundMusic.play().catch(error => {
+  //   console.log('Autoplay blocked:', error);
+  // });
+  
+  // Hide the first view
+  firstView.classList.add('hidden');
+  
+  // Afficher la seconde vue
+  setTimeout(() => {
+    secondView.classList.add('visible');
+    
+    // Show the title after a short delay
+    setTimeout(() => {
+      titleContainer.style.opacity = '1';
+      titleContainer.style.transform = 'translate(-50%, -50%)';
+    }, 300);
+  }, 800);
+}
+
+// first-view 3D exit trigger (desktop & mobile)
+if (floatingBox) {
+  // play entrance animation immediately
+  floatingBox.classList.add('welcome-enter');
+
+  function triggerFirstExit() {
+    if (hasEnteredSecondView) return;
+    if (floatingBox.classList.contains('welcome-exit')) return;
+    floatingBox.classList.add('welcome-exit');
+    floatingBox.addEventListener('animationend', () => {
+      enterSecondView();
+    }, { once: true });
+  }
+
+  floatingBox.addEventListener('click', triggerFirstExit);
+  floatingBox.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    triggerFirstExit();
+  }, { passive: false });
+}
+
+// ================================================================
+// NAVIGATION DANS LA SECONDE VUE (TITRE <-> GUI)
+// ================================================================
+function startTransition(target) {
+  if (!hasEnteredSecondView) return;
+  if (currentView === target && !transitionTimeout) return;
+
+  // clear any pending finalization
+  if (transitionTimeout) {
+    clearTimeout(transitionTimeout);
+    transitionTimeout = null;
+  }
+
+  if (target === 'guis') {
+    // immediately apply visual state for GUIs
+    titleContainer.style.opacity = '0';
+    titleContainer.style.transform = 'translate(-50%, -150%)';
+    titleContainer.style.pointerEvents = 'none';
+
+    guisWrapper.style.opacity = '1';
+    guisWrapper.style.pointerEvents = 'auto';
+  } else {
+    // target === 'title'
+    guisWrapper.style.opacity = '0';
+    guisWrapper.style.pointerEvents = 'none';
+
+    titleContainer.style.opacity = '1';
+    titleContainer.style.transform = 'translate(-50%, -50%)';
+    titleContainer.style.pointerEvents = 'auto';
+  }
+
+  // finalize currentView after transition duration (allows reversal if interrupted)
+  transitionTimeout = setTimeout(() => {
+    currentView = target;
+    transitionTimeout = null;
+  }, 800);
+}
+
+function transitionToGuis() { startTransition('guis'); }
+function transitionToTitle() { startTransition('title'); }
+
+window.addEventListener('wheel', (e) => {
+  if (Date.now() < wheelCooldownUntil) return;
+  if (!scrollingEnabled || !hasEnteredSecondView || hasEnteredContactView) return;
+  if (e.deltaY > 0) {
+    transitionToGuis();
+  } else if (e.deltaY < 0) {
+    transitionToTitle();
+  }
+}, { passive: true });
+
+let touchStartY = 0;
+window.addEventListener('touchstart', (e) => {
+  if (!hasEnteredSecondView) return;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+  if (!scrollingEnabled || !hasEnteredSecondView) return;
+  
+  const touchEndY = e.touches[0].clientY;
+  const diff = touchStartY - touchEndY;
+  
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) {
+      transitionToGuis();
+    } else {
+      transitionToTitle();
+    }
+    touchStartY = touchEndY;
+  }
+}, { passive: true });
+
+// ================================================================
+// MODAL INFO
+// ================================================================
+let scrollingEnabled = true;
+
+function openModal() {
+  infoModal.classList.remove('hide');
+  // ensure show class triggers opening animation
+  infoModal.classList.add('show');
+  scrollingEnabled = false;
+}
+
+function closeModalFunc() {
+  // trigger hide animation then remove the class after animation ends
+  if (!infoModal.classList.contains('show')) return;
+  infoModal.classList.remove('show');
+  infoModal.classList.add('hide');
+  // cleanup after animation (slightly longer than CSS animation)
+  setTimeout(() => {
+    infoModal.classList.remove('hide');
+  }, 420);
+  scrollingEnabled = true;
+}
+
+infoButton.addEventListener('click', openModal);
+closeModal.addEventListener('click', closeModalFunc);
+
+infoModal.addEventListener('click', (e) => {
+  if (e.target === infoModal) {
+    closeModalFunc();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModalFunc();
+  }
+});
+
+// Contact panel open/close
+function openContactPanel() {
+  if (!contactPanel) return;
+  contactPanel.classList.remove('hide');
+  contactPanel.classList.add('show');
+  scrollingEnabled = false;
+}
+
+function closeContactPanel() {
+  if (!contactPanel || !contactPanel.classList.contains('show')) return;
+  contactPanel.classList.remove('show');
+  contactPanel.classList.add('hide');
+  setTimeout(() => contactPanel.classList.remove('hide'), 350);
+  scrollingEnabled = true;
+}
+
+if (closeContact) closeContact.addEventListener('click', exitContactView);
+// background clicks on contactPanel should NOT close it — exit only via wheel-up or close button
+
+// close contact on Escape as well
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeContactPanel();
+  }
+});
+
+// ----- Contact view transitions (like first->second) -----
+function enterContactView() {
+  if (hasEnteredContactView) return;
+  hasEnteredContactView = true;
+  // animate main panel away (evaporate upwards) — mirror title->guis transition
+  titleContainer.style.opacity = '0';
+  titleContainer.style.transform = 'translate(-50%, -150%)';
+  titleContainer.style.pointerEvents = 'none';
+
+  guisWrapper.style.opacity = '0';
+  guisWrapper.style.pointerEvents = 'none';
+
+  // show the contact view after a short delay to match pacing
+  setTimeout(() => {
+    if (contactPanel) contactPanel.classList.add('show');
+    // allow wheel inside contact so user can scroll up to go back
+    scrollingEnabled = true;
+    wheelCooldownUntil = Date.now() + 900;
+  }, 420);
+}
+
+function exitContactView() {
+  if (!hasEnteredContactView) return;
+  hasEnteredContactView = false;
+
+  // hide contact and reveal second view
+  if (contactPanel) {
+    contactPanel.classList.remove('show');
+    contactPanel.classList.add('hide');
+    setTimeout(() => contactPanel.classList.remove('hide'), 420);
+  }
+
+  // restore main panel with matching timing — move title out of view so GUIs are primary
+  setTimeout(() => {
+    titleContainer.style.opacity = '0';
+    titleContainer.style.transform = 'translate(-50%, -150%)';
+    titleContainer.style.pointerEvents = 'none';
+
+    guisWrapper.style.opacity = '1';
+    guisWrapper.style.pointerEvents = 'auto';
+    scrollingEnabled = true;
+    wheelCooldownUntil = Date.now() + 900;
+  }, 420);
+}
+
+// close contact on Escape as well
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    exitContactView();
+  }
+});
+
+// wheel and touch handlers to go back from contact view
+window.addEventListener('wheel', (e) => {
+  if (Date.now() < wheelCooldownUntil) return;
+  if (!scrollingEnabled || !hasEnteredContactView) return;
+  if (e.deltaY < 0) {
+    exitContactView();
+    // prevent immediate additional wheel-driven transitions
+    wheelCooldownUntil = Date.now() + 900;
+  }
+}, { passive: true });
+
+let touchStartY_contact = 0;
+window.addEventListener('touchstart', (e) => {
+  if (!hasEnteredContactView) return;
+  touchStartY_contact = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+  if (!scrollingEnabled || !hasEnteredContactView) return;
+  const touchEndY = e.touches[0].clientY;
+  const diff = touchStartY_contact - touchEndY;
+  if (Math.abs(diff) > 50) {
+    if (diff < 0) { // swipe down to go back
+      exitContactView();
+    }
+    touchStartY_contact = touchEndY;
+  }
+}, { passive: true });
+
+// ================================================================
+// WORD TRAIL — spawn glowing words on click (same visual style)
+// ================================================================
+const wordPhrases = [
+  'Phobia', 'Deus', 'Arma', 'Animam', 'Tuam', 'Servet', 'Victoria', 'Cor',
+
+  // Elevated mystical English
+  'Eternity', 'Solitude', 'Reverie', 'Whisper', 'Serenity',
+  'Melancholy', 'Euphoria', 'Twilight', 'Destiny', 'Radiance',
+  'Divinity', 'Infinity', 'Silence', 'Harmony', 'Echo',
+  'Shadow', 'Dreamscape', 'Ascension', 'Transcendence', 'Sanctuary',
+
+  // Refined Latin & ancient
+  'Lux', 'Umbra', 'Aeternum', 'Ignis', 'Anima',
+  'Pax', 'Tempus', 'Gloria', 'Arcanum', 'Veritas',
+  'Aether', 'Somnium', 'Memoria', 'Vox', 'Stella',
+
+  // Poetic modern
+  'Faith', 'Pulse', 'Glow', 'Drift', 'Origin',
+  'Ripple', 'Veil', 'Bloom', 'Haze', 'Spark',
+  'Flux', 'Zenith', 'Nimbus', 'Aura', 'Vortex',
+
+  // Russian XVII
+  'Упоенье', 'Томленье', 'Ласканье', 'Восторганье', 'Сладость',
+  'Щемленье', 'Затаённость', 'Блаженство', 'Влеченье', 'Порыв',
+  'Нежание', 'Светлость', 'Трепетанье', 'Объятность', 'Вздох',
+  'Млеенье', 'Сиянье', 'Шелест', 'Зовётность', 'Лепота'
+];
+
+
+function spawnWord(x, y) {
+  const el = document.createElement('div');
+  el.className = 'word-trail';
+  el.textContent = wordPhrases[Math.floor(Math.random() * wordPhrases.length)];
+  document.body.appendChild(el);
+
+  const angle = (Math.random() - 0.5) * 40;
+  const scale = 0.9 + Math.random() * 0.7;
+
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.transform = `translate(-50%, -50%) rotate(${angle}deg) scale(${scale})`;
+
+  requestAnimationFrame(() => el.classList.add('show'));
+
+  // float upward and fade
+  setTimeout(() => {
+    el.style.transform = `translate(-50%, -140%) rotate(${angle + 20}deg) scale(${scale * 0.85})`;
+    el.style.opacity = '0';
+  }, 60);
+
+  setTimeout(() => el.remove(), 1600);
+}
+
+document.addEventListener('click', (e) => {
+  // Global UI exclusions
+  if (e.target.closest('#infoModal, .smallGui, #infoButton, #floatingBox, #closeModal')) return;
+
+  // If we're inside Contact view: prevent words inside the content or on the close button,
+  // allow spawning on the overlay background (but do not close the panel).
+  if (hasEnteredContactView) {
+    if (e.target.closest('#contactContent') || e.target.closest('#closeContact')) {
+      return;
+    }
+    // click on overlay outside contactContent -> spawn word
+    spawnWord(e.clientX, e.clientY);
+    return;
+  }
+
+  // General case (not in contact view)
+  if (e.target.closest('#closeContact')) return;
+  spawnWord(e.clientX, e.clientY);
+});
+// do not close contactPanel on background click — user requested only wheel-up or close button to exit
+
+// Add click handlers to `.smallGui` boxes so they also trigger a localized word spawn
+function bindSmallGuiClicks() {
+  const guis = document.querySelectorAll('.smallGui');
+  guis.forEach(gui => {
+    gui.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      // clicking GUIs no longer spawns words (user request)
+      // temporary pulse visual
+      gui.classList.add('pulse');
+      setTimeout(() => gui.classList.remove('pulse'), 900);
+      // if this card is the Contact card, open the contact panel
+      const titleEl = gui.querySelector('.gui-title-small');
+      if (titleEl && titleEl.textContent.trim().toLowerCase() === 'contact') {
+        enterContactView();
+      }
+    });
+  });
+}
+
+// bind now (works for initial DOM)
+bindSmallGuiClicks();
+</script>
+</body>
+</html>
